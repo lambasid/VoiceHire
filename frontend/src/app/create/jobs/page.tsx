@@ -1,9 +1,9 @@
 'use client';
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Loader from "@/components/ui/loader";
 import { Button } from "@/components/ui/button";
+import { briefSampleJobs } from "@/lib/mock-data";
 interface JobCard {
   id: string;
   title: string;
@@ -64,9 +64,12 @@ interface JobCard {
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<JobCard[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/jobs")
+    const controller = new AbortController();
+
+    fetch("/api/jobs", { signal: controller.signal })
       .then((res) => {
         if (!res.ok) {
           throw new Error('Network response was not ok');
@@ -80,11 +83,23 @@ export default function JobsPage() {
           throw new Error('Empty response body');
         }
       })
-      .then((data) => setJobs(data))
-      .catch((error) => console.error('Error fetching jobs:', error));
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setJobs(data);
+          return;
+        }
+
+        setJobs(briefSampleJobs);
+      })
+      .catch(() => {
+        setJobs(briefSampleJobs);
+      })
+      .finally(() => setIsLoading(false));
+
+    return () => controller.abort();
   }, []);
 
-  if (jobs.length === 0) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader fullScreen />
@@ -93,39 +108,28 @@ export default function JobsPage() {
   }
 
   return (
-<<<<<<< HEAD
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl font-extrabold tracking-tight">Your Active Screen Jobs</h1>
-          <Button className="bg-blue-600 hover:bg-blue-700 transition">Create ScreenJob</Button>
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        <div className="rounded-2xl border border-slate-800/90 bg-slate-900/70 p-6 backdrop-blur-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight">Job postings</h1>
+              <p className="mt-1 text-sm text-slate-400">Track open roles and review incoming candidates quickly.</p>
+            </div>
+          <Button>Create screen job</Button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
           {jobs.map((job) => (
             <Link href={`/create/jobs/${job.id}`} key={job.id}>
-              <div className="bg-gray-800 border border-gray-700 rounded-2xl shadow-md hover:shadow-xl transition duration-300 cursor-pointer">
-                <div className="p-5">
-                  <span className="inline-block bg-blue-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide text-blue-100 mb-2">
+              <div className="h-full rounded-xl border border-slate-800 bg-slate-900/80 p-5 text-slate-100 shadow-sm hover:-translate-y-0.5 hover:border-blue-500/50 hover:shadow-blue-900/20 hover:shadow-lg transition-all duration-200 cursor-pointer">
+                <div>
+                  <span className="inline-block rounded-full bg-blue-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-300 mb-3">
                     {job.field}
                   </span>
-                  <h2 className="text-xl font-semibold mb-2 text-white">{job.title}</h2>
-                  <p className="text-sm text-gray-300 line-clamp-3">{job.description}</p>
-=======
-    <div className="min-h-screen bg-background text-foreground py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-     
-        <h1 className="text-3xl font-bold mb-8 ">Existing Screen Jobs</h1>
-       
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {jobs.map((job) => (
-            <Link href={`/create/jobs/${job.id}`} key={job.id}>
-              <div className="bg-gray-900 rounded-lg shadow-md overflow-hidden hover:bg-gray-800 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-                <div className="p-6">
-                  <div className="text-sm font-medium text-blue-600 mb-2">{job.field}</div>
-                  <h2 className="text-xl font-semibold text-white mb-3">{job.title}</h2>
-                  <p className="text-gray-600">{job.description}</p>
->>>>>>> 1901da6 (feat: add moment.js for date handling and enhance scheduling UI)
+                  <h2 className="text-xl font-semibold mb-2">{job.title}</h2>
+                  <p className="text-sm text-slate-400 line-clamp-3">{job.description}</p>
                 </div>
               </div>
             </Link>

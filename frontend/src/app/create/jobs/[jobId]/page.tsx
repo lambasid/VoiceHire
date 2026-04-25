@@ -8,11 +8,11 @@ export default function JobPostingPage({ params }: { params: Promise<{ jobId: st
   const { jobId } = use(params);
   
   return (
-    <div className="container mx-auto p-4 bg-gradient-to-b from-gray-900 to-gray-800">
-
+    <div className="min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6">
+      <div className="mx-auto max-w-7xl space-y-6">
       <JobDetails jobId={jobId} />
-      
       <AppliedCandidatesTable jobId={jobId} />
+      </div>
     </div>
   );
 }

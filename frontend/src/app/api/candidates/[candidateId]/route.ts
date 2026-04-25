@@ -3,9 +3,9 @@ import pool from '@/actions/db'; // Ensure this is your shared PostgreSQL client
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { candidateId: string } }
+  { params }: { params: Promise<{ candidateId: string }> }
 ) {
-  const { candidateId } = params;
+  const { candidateId } = await params;
 
   try {
     const result = await pool.query('SELECT * FROM candidates WHERE id = $1', [candidateId]);

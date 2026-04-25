@@ -11,14 +11,15 @@ import RotatingText from "@/components/RotatingText";
 export default function Home() {
   const [open, setOpen] = useState(false);
   const [showAssistant, setShowAssistant] = useState(false);
-  const dropdownRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
-        !(dropdownRef.current as any).contains(event.target)
+        event.target instanceof Node &&
+        !dropdownRef.current.contains(event.target)
       ) {
         setOpen(false);
       }
@@ -54,7 +55,6 @@ export default function Home() {
             whileTap={{ scale: 0.9, rotate: -5 }}
             whileHover={{ scale: 1.1 }}
             onClick={toggleAssistant}
-            onMouseEnter={toggleAssistant}
             className={`relative z-10 w-28 h-28 flex items-center justify-center rounded-full cursor-pointer transition-all duration-300 ease-in-out
               ${showAssistant
                 ? "bg-red-500 text-white shadow-xl animate-pulse"

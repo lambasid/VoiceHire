@@ -3,9 +3,9 @@ import pool from "@/actions/db";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const jobId =  context.params.id;
+  const { id: jobId } = await context.params;
 
   try {
     const result = await pool.query("SELECT * FROM jobs WHERE id = $1", [jobId]);
