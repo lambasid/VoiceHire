@@ -1,32 +1,8 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-// import "./globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import type { ReactNode } from "react";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "ScoutX - Modern Recruitment Platform",
-  description: "A modern recruitment platform powered by AI",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en" className="dark">
-      <body className={inter.className}>
-        <SidebarProvider>
-
-
-
-            {children}
-          
-        </SidebarProvider>
-      </body>
-    </html>
-  );
+/**
+ * Layout for /create/* routes. Nests inside the root layout; do not add <html> or <body> here.
+ */
+export default function CreateLayout({ children }: { children: ReactNode }) {
+  return <div className="min-h-0 min-w-0 flex-1">{children}</div>;
 }

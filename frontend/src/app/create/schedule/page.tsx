@@ -65,18 +65,10 @@ export default function SchedulePage() {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="container mx-auto p-16 h-screen bg-gradient-to-b from-gray-900 to-gray-800 px-2">
-      <div className="w-full">
-        <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-3xl font-bold text-blue-400">AI Interview Scheduling</h1>
-          
-=======
     <div className="min-h-screen bg-background text-foreground px-6 py-10 w-full">
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold tracking-tight px-4">AI Interview Scheduler</h1>
->>>>>>> 1901da6 (feat: add moment.js for date handling and enhance scheduling UI)
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-8">
+          <h1 className="text-2xl font-bold tracking-tight">AI interview scheduling</h1>
           <button
             onClick={() => setShowForm(true)}
             className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white text-sm"

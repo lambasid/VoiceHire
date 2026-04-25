@@ -8,26 +8,33 @@ export default function FakeSpectrumVisualizer() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
-    // Make canvas fill the container
+
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    let animationFrameId = 0;
+
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const parent = canvas.parentElement;
+      if (!parent) return;
+
+      const width = parent.clientWidth;
+      const height = parent.clientHeight;
+
+      canvas.width = Math.floor(width * pixelRatio);
+      canvas.height = Math.floor(height * pixelRatio);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
     };
-    
-    // Initial resize and event listener
+
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const numBars = 128; // More bars for a fuller effect
-    const barWidth = canvas.width / numBars;
+    const numBars = 72;
     const spacing = 2;
-    const cornerRadius = 3; // Smaller radius for more bars
+    const cornerRadius = 3;
 
-    // Create a gradient of blue hues for ScoutX branding
     const colors = [
       'rgba(59, 130, 246, 0.7)', // blue-500
       'rgba(37, 99, 235, 0.7)',  // blue-600
@@ -64,61 +71,57 @@ export default function FakeSpectrumVisualizer() {
     };
 
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Calculate dynamic heights based on canvas size
-      const maxHeight = canvas.height * 0.8;
-      const blockHeight = maxHeight / 20;
+      const width = canvas.width;
+      const height = canvas.height;
+      const barWidth = width / numBars;
+      const scaledCornerRadius = cornerRadius * pixelRatio;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const maxHeight = height * 0.75;
 
       for (let i = 0; i < numBars; i++) {
-        // Smoothly interpolate toward target
-        spectrum[i] += (target[i] - spectrum[i]) * 0.05;
-        
-        // Calculate height for this bar (percentage of max height)
+        spectrum[i] += (target[i] - spectrum[i]) * 0.08;
         const barHeight = (spectrum[i] / 100) * maxHeight;
-        
+
         if (barHeight > 0) {
           const x = i * barWidth + spacing;
-          const y = canvas.height - barHeight;
+          const y = height - barHeight;
           const color = colors[i % colors.length];
-          
-          // Draw single bar instead of blocks for a cleaner look
+
           drawRoundedRect(
             ctx, 
             x, 
             y, 
             barWidth - spacing * 2, 
             barHeight - spacing, 
-            cornerRadius, 
+            scaledCornerRadius,
             color
           );
         }
       }
 
-      requestAnimationFrame(draw);
+      animationFrameId = requestAnimationFrame(draw);
     };
 
     const generateNewTargets = () => {
-      // Create wave-like patterns
       for (let i = 0; i < numBars; i++) {
-        // Base amplitude varies slightly
-        const baseAmplitude = 40 + Math.random() * 40;
-        
-        // Create wave pattern with some randomness
+        const baseAmplitude = 35 + Math.random() * 35;
         const wave1 = Math.sin(i / (numBars / 8)) * 20;
         const wave2 = Math.cos(i / (numBars / 12)) * 15;
-        const randomness = Math.random() * 25;
-        
+        const randomness = Math.random() * 18;
+
         target[i] = Math.max(0, Math.min(100, baseAmplitude + wave1 + wave2 + randomness));
       }
     };
 
     draw();
-    generateNewTargets(); // Initial generation
-    
-    const targetInterval = setInterval(generateNewTargets, 2000);
+    generateNewTargets();
+
+    const targetInterval = setInterval(generateNewTargets, 1800);
 
     return () => {
+      cancelAnimationFrame(animationFrameId);
       clearInterval(targetInterval);
       window.removeEventListener('resize', resizeCanvas);
     };

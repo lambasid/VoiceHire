@@ -1,5 +1,5 @@
-'use client';
-import Image from "next/image";
+"use client";
+
 import { useState } from "react";
 import { Switch } from "@headlessui/react";
 
@@ -31,17 +31,17 @@ export default function SettingsPage() {
           <div className="space-y-2">
             <p><strong>Name:</strong> Jane Doe</p>
             <p><strong>Email:</strong> jane@company.com</p>
-            <p><strong>Company:</strong> ScoutX</p>
+            <p><strong>Company:</strong> VoiceHire</p>
             <button className="mt-2 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Change Password</button>
           </div>
           <div className="mt-4">
             <h3 className="font-medium">Notification Preferences</h3>
-            {['email', 'sms', 'inApp'].map(type => (
+            {(["email", "sms", "inApp"] as const).map((type) => (
               <div key={type} className="flex items-center justify-between mt-2">
                 <span>{type.toUpperCase()}</span>
                 <Switch
-                  checked={enabled[type as keyof typeof enabled]}
-                  onChange={(val) => setEnabled({ ...enabled, [type]: val })}
+                  checked={enabled[type]}
+                  onChange={(val) => setEnabled((prev) => ({ ...prev, [type]: val }))}
                   className={`${enabled[type as keyof typeof enabled] ? 'bg-blue-600' : 'bg-gray-600'} relative inline-flex h-6 w-11 items-center rounded-full`}
                 >
                   <span className="sr-only">Enable {type}</span>

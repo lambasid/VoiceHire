@@ -20,8 +20,9 @@ interface Candidate {
   location: string;
   ai_skill_match_score: number;
   ai_experience_match_score: number;
-  job_name: string;
-  descirption: string;
+  job_name?: string;
+  /** Job description (legacy field name kept for API compatibility). */
+  descirption?: string;
 }
 
 interface FirstScreenFormModalProps {

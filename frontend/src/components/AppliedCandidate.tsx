@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Loader from "./ui/loader";
 import Link from "next/link";
 import { FirstScreenFormModal } from "./FirstScreenModal";
-import { Inbox } from "lucide-react";
+import { CalendarDays, Inbox } from "lucide-react";
+import { sampleCandidates } from "@/lib/mock-data";
 interface Job {
   id: string;
   title: string;
@@ -41,38 +42,65 @@ interface Candidate {
 export default function AppliedCandidatesTable({ jobId }: { jobId: string }) {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [job, setJob] = useState<Job | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUsingSampleData, setIsUsingSampleData] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
 
   useEffect(() => {
-    // Fetch job details
-    fetch(`/api/jobs/${jobId}/`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch job details");
-        return res.json();
-      })
-      .then((data) => {
-        console.log('Job data:', data);
-        setJob(data);
-      })
-      .catch((err) => setError(err.message));
+    const fallbackJob: Job = {
+      id: jobId,
+      title: "Product Engineer",
+      description: "Build scalable hiring experiences and AI-powered candidate workflows.",
+      field: "Engineering",
+      location: "Remote",
+      employment_type: "Full-time",
+      salary_range: "$120k - $155k",
+      experience_level: "Mid-Senior",
+      required_skills: ["React", "TypeScript", "Next.js"],
+      preferred_skills: ["PostgreSQL", "Node.js"],
+      company_name: "VoiceHire",
+      company_website: "https://voicehire.example.com",
+      application_deadline: new Date().toISOString(),
+      status: "open",
+      requirements: "Strong product thinking and collaboration skills.",
+    };
 
-    // Fetch candidates
-    fetch(`/api/jobs/${jobId}/all-candidates/`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch candidates");
-        return res.json();
-      })
-      .then(setCandidates)
-      .catch((err) => setError(err.message));
+    const fetchData = async () => {
+      try {
+        const [jobResponse, candidatesResponse] = await Promise.all([
+          fetch(`/api/jobs/${jobId}`),
+          fetch(`/api/jobs/${jobId}/all-candidates`),
+        ]);
+
+        const resolvedJob = jobResponse.ok ? await jobResponse.json() : fallbackJob;
+        const resolvedCandidates = candidatesResponse.ok ? await candidatesResponse.json() : sampleCandidates;
+
+        setJob(resolvedJob);
+        if (Array.isArray(resolvedCandidates) && resolvedCandidates.length > 0) {
+          setCandidates(resolvedCandidates);
+          setIsUsingSampleData(false);
+          return;
+        }
+
+        setCandidates(sampleCandidates);
+        setIsUsingSampleData(true);
+      } catch {
+        setJob(fallbackJob);
+        setCandidates(sampleCandidates);
+        setIsUsingSampleData(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [jobId]);
 
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!candidates.length || !job) return (<Loader />);
+  if (isLoading || !job) return (<Loader />);
 
   return (
-    <div className="mt-6">
+    <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-6">
       {showModal && selectedCandidate && job && (
         <FirstScreenFormModal 
           candidate={{
@@ -97,94 +125,87 @@ export default function AppliedCandidatesTable({ jobId }: { jobId: string }) {
           }}
         />
       )}
-      <h2 className="text-xl font-semibold mb-4">Applied Candidates</h2>
-      <table className="w-full text-left text-sm border border-gray-700 rounded overflow-hidden">
-        <thead className="bg-gray-800 text-gray-100">
-          <tr>
-            <th className="p-3">Name</th>
-            <th className="p-3">Current Position</th>
-            <th className="p-3">Experience</th>
-            <th className="p-3">Location</th>
-            <th className="p-3">Match Score</th>
-            <th className="p-3">Status</th>
-            <th className="p-3">Applied</th>
-            <th className="p-3 text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {candidates.map((c) => (
-            <tr key={c.id} className="border-t border-gray-700 hover:bg-gray-800 transition">
-              <td className="p-3">
-                <Link href={`/create/jobs/${jobId}/candidate/${c.id}`} className="text-blue-400 hover:underline">
-                  {c.name}
-                </Link>
-              </td>
-              <td className="p-3">
-                <div className="text-gray-300 font-medium">{c.current_job_title}</div>
-                <div className="text-gray-500 text-xs">{c.current_company}</div>
-              </td>
-              <td className="p-3">{c.experience_years} years</td>
-              <td className="p-3">{c.location}</td>
-              <td className="p-3">
-                <div className="flex flex-col gap-1">
-                  <span className="text-green-400 text-sm">Skill: {c.ai_skill_match_score}%</span>
-                  <span className="text-blue-400 text-sm">Exp: {c.ai_experience_match_score}%</span>
-                </div>
-              </td>
-              <td className="p-3">
-                <span className={`px-2 py-1 rounded text-xs font-medium uppercase tracking-wide ${
-                  c.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                  c.status === 'interviewed' ? 'bg-blue-500/20 text-blue-400' :
-                  c.status === 'hired' ? 'bg-green-500/20 text-green-400' :
-                  'bg-gray-500/20 text-gray-400'
-                }`}>
-                  {c.status}
-                </span>
-              </td>
-              <td className="p-3 text-gray-400 text-sm">
-                {new Date(c.applied_at).toLocaleDateString()}
-              </td>
-              <td className="p-3 text-center">
-                <button
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-xs px-4 py-1 rounded shadow-md transition"
-                  onClick={() => window.location.href = `/interview/${c.id}`}
-                >
-                 Schedule Interview
-                </button>
-              </td>
-              <td className="p-3 text-center">
-                <div className="flex flex-col gap-2">
-                  <button
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-xs px-4 py-1 rounded shadow-md transition"
-                    onClick={() => {
-                      setSelectedCandidate(c);
-                      setShowModal(true);
-                    }}
-                  >
-                    First Screening
-                  </button>
-                  <button
-                    className="bg-gradient-to-r from-pink-400 to-indigo-700 hover:from-blue-700 hover:to-blue-800 text-white text-xs px-4 py-1 rounded shadow-md transition"
-              
-                  >
-            <Link href={`/create/analysis/${c.id}`}>
-                      View Analysis
-                    </Link>
-                  </button>
-                </div>
-              </td>
-              <td className="p-3 text-center">
-                <button
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-xs px-4 py-1 rounded shadow-md transition"
-                  onClick={() => alert(`Start AI interview for ${c.name}`)}
-                >
-            <Inbox />
-                </button>
-              </td>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h2 className="text-xl font-semibold text-slate-100">Applied candidates</h2>
+        {isUsingSampleData && (
+          <span className="rounded-full border border-blue-500/40 bg-blue-500/10 px-3 py-1 text-xs text-blue-300">
+            Showing sample candidate data
+          </span>
+        )}
+      </div>
+
+      <div className="overflow-x-auto rounded-xl border border-slate-800">
+        <table className="w-full text-left text-sm">
+          <thead className="bg-slate-900 text-slate-200">
+            <tr>
+              <th className="p-3">Candidate</th>
+              <th className="p-3">Current role</th>
+              <th className="p-3">Match</th>
+              <th className="p-3">Status</th>
+              <th className="p-3">Applied</th>
+              <th className="p-3 text-right">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className="divide-y divide-slate-800 bg-slate-950/40">
+            {candidates.map((c) => (
+              <tr key={c.id} className="hover:bg-slate-900/70 transition-colors duration-150">
+                <td className="p-3">
+                  <Link href={`/create/jobs/${jobId}/candidate/${c.id}`} className="font-medium text-blue-300 hover:text-blue-200">
+                    {c.name}
+                  </Link>
+                  <div className="text-xs text-slate-400">{c.email}</div>
+                </td>
+                <td className="p-3">
+                  <div className="text-slate-200">{c.current_job_title}</div>
+                  <div className="text-xs text-slate-400">{c.current_company} - {c.location}</div>
+                </td>
+                <td className="p-3 text-xs">
+                  <div className="text-green-300">Skill {c.ai_skill_match_score}%</div>
+                  <div className="text-blue-300">Experience {c.ai_experience_match_score}%</div>
+                </td>
+                <td className="p-3">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${
+                    c.status === 'pending' ? 'bg-amber-500/20 text-amber-300' :
+                    c.status === 'interviewed' ? 'bg-blue-500/20 text-blue-300' :
+                    c.status === 'hired' ? 'bg-emerald-500/20 text-emerald-300' :
+                    'bg-slate-500/20 text-slate-300'
+                  }`}>
+                    {c.status}
+                  </span>
+                </td>
+                <td className="p-3 text-slate-400">{new Date(c.applied_at).toLocaleDateString()}</td>
+                <td className="p-3">
+                  <div className="flex flex-wrap justify-end gap-2">
+                    <button
+                      className="rounded-md border border-blue-500/40 bg-blue-500/10 px-3 py-1 text-xs text-blue-200 hover:bg-blue-500/20 transition-colors"
+                      onClick={() => {
+                        setSelectedCandidate(c);
+                        setShowModal(true);
+                      }}
+                    >
+                      First screening
+                    </button>
+                    <Link href={`/create/analysis/${c.id}`} className="rounded-md border border-fuchsia-500/40 bg-fuchsia-500/10 px-3 py-1 text-xs text-fuchsia-200 hover:bg-fuchsia-500/20 transition-colors">
+                      Analysis
+                    </Link>
+                    <Link href={`/interview/${c.id}`} className="rounded-md border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-200 hover:bg-emerald-500/20 transition-colors inline-flex items-center gap-1">
+                      <CalendarDays className="h-3.5 w-3.5" />
+                      Schedule
+                    </Link>
+                    <button
+                      className="rounded-md border border-slate-700 bg-slate-800 px-2 py-1 text-slate-200 hover:bg-slate-700 transition-colors"
+                      onClick={() => alert(`Feedback sent to ${c.name}`)}
+                      aria-label={`Send feedback to ${c.name}`}
+                    >
+                      <Inbox className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }

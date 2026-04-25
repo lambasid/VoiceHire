@@ -47,7 +47,9 @@ const mockAnalysis = {
 };
 
 export default function CandidateAnalysisReport() {
-  const { candidateId } = useParams();
+  const params = useParams();
+  const raw = params.candidateId;
+  const candidateId = Array.isArray(raw) ? raw[0] : raw;
 
   const chartData = useMemo(() => {
     const labels = Object.keys(mockAnalysis.criteria_scores);
@@ -146,7 +148,9 @@ export default function CandidateAnalysisReport() {
   return (
     <div className="max-w-4xl mx-auto p-8 text-gray-200 bg-gray-900 rounded-xl shadow-lg mt-10 border border-gray-700">
       <h1 className="text-3xl font-bold mb-4 text-blue-400">AI Screening Report</h1>
-      <p className="text-sm text-gray-500 mb-6">Candidate ID: {candidateId}</p>
+      <p className="text-sm text-gray-500 mb-6">
+        Candidate ID: {candidateId ?? "—"}
+      </p>
 
       <section className="mb-6">
         <h2 className="text-xl font-semibold mb-2">Candidate: {mockAnalysis.candidate_name}</h2>
