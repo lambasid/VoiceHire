@@ -100,7 +100,7 @@ export default function AppliedCandidatesTable({ jobId }: { jobId: string }) {
   if (isLoading || !job) return (<Loader />);
 
   return (
-    <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-6">
+    <section className="mt-6 rounded-2xl border border-violet-200/60 bg-white/80 backdrop-blur-sm p-4 sm:p-6">
       {showModal && selectedCandidate && job && (
         <FirstScreenFormModal 
           candidate={{
@@ -126,17 +126,17 @@ export default function AppliedCandidatesTable({ jobId }: { jobId: string }) {
         />
       )}
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xl font-semibold text-slate-100">Applied candidates</h2>
+        <h2 className="text-xl font-semibold text-slate-800">Applied candidates</h2>
         {isUsingSampleData && (
-          <span className="rounded-full border border-blue-500/40 bg-blue-500/10 px-3 py-1 text-xs text-blue-300">
+          <span className="rounded-full border border-sky-300/60 bg-sky-100 px-3 py-1 text-xs text-sky-700">
             Showing sample candidate data
           </span>
         )}
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-800">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-slate-900 text-slate-200">
+      <div className="overflow-x-auto rounded-xl border border-violet-200/60">
+        <table className="w-full min-w-[600px] text-left text-sm">
+          <thead className="bg-white/80 backdrop-blur-sm text-slate-800">
             <tr>
               <th className="p-3">Candidate</th>
               <th className="p-3">Current role</th>
@@ -146,38 +146,38 @@ export default function AppliedCandidatesTable({ jobId }: { jobId: string }) {
               <th className="p-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800 bg-slate-950/40">
+          <tbody className="divide-y divide-violet-200/60 bg-white/60">
             {candidates.map((c) => (
-              <tr key={c.id} className="hover:bg-slate-900/70 transition-colors duration-150">
+              <tr key={c.id} className="hover:bg-violet-50/60 transition-colors duration-150">
                 <td className="p-3">
-                  <Link href={`/create/jobs/${jobId}/candidate/${c.id}`} className="font-medium text-blue-300 hover:text-blue-200">
+                  <Link href={`/create/jobs/${jobId}/candidate/${c.id}`} className="font-medium text-sky-700 hover:text-sky-900">
                     {c.name}
                   </Link>
-                  <div className="text-xs text-slate-400">{c.email}</div>
+                  <div className="text-xs text-slate-500">{c.email}</div>
                 </td>
                 <td className="p-3">
-                  <div className="text-slate-200">{c.current_job_title}</div>
-                  <div className="text-xs text-slate-400">{c.current_company} - {c.location}</div>
+                  <div className="text-slate-800">{c.current_job_title}</div>
+                  <div className="text-xs text-slate-500">{c.current_company} - {c.location}</div>
                 </td>
                 <td className="p-3 text-xs">
-                  <div className="text-green-300">Skill {c.ai_skill_match_score}%</div>
-                  <div className="text-blue-300">Experience {c.ai_experience_match_score}%</div>
+                  <div className="text-emerald-600 font-medium">Skill {c.ai_skill_match_score}%</div>
+                  <div className="text-sky-700 font-medium">Experience {c.ai_experience_match_score}%</div>
                 </td>
                 <td className="p-3">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${
-                    c.status === 'pending' ? 'bg-amber-500/20 text-amber-300' :
-                    c.status === 'interviewed' ? 'bg-blue-500/20 text-blue-300' :
-                    c.status === 'hired' ? 'bg-emerald-500/20 text-emerald-300' :
-                    'bg-slate-500/20 text-slate-300'
+                    c.status === 'pending' ? 'bg-amber-100 text-amber-700' :
+                    c.status === 'interviewed' ? 'bg-sky-100 text-sky-700' :
+                    c.status === 'hired' ? 'bg-emerald-100 text-emerald-700' :
+                    'bg-slate-100 text-slate-600'
                   }`}>
                     {c.status}
                   </span>
                 </td>
-                <td className="p-3 text-slate-400">{new Date(c.applied_at).toLocaleDateString()}</td>
+                <td className="p-3 text-slate-500">{new Date(c.applied_at).toLocaleDateString()}</td>
                 <td className="p-3">
                   <div className="flex flex-wrap justify-end gap-2">
                     <button
-                      className="rounded-md border border-blue-500/40 bg-blue-500/10 px-3 py-1 text-xs text-blue-200 hover:bg-blue-500/20 transition-colors"
+                      className="rounded-md bg-gradient-to-r from-violet-500 to-sky-500 px-3 py-1 text-xs font-medium text-white shadow-sm shadow-violet-300/40 hover:from-violet-600 hover:to-sky-600 transition-colors"
                       onClick={() => {
                         setSelectedCandidate(c);
                         setShowModal(true);
@@ -185,15 +185,15 @@ export default function AppliedCandidatesTable({ jobId }: { jobId: string }) {
                     >
                       First screening
                     </button>
-                    <Link href={`/create/analysis/${c.id}`} className="rounded-md border border-fuchsia-500/40 bg-fuchsia-500/10 px-3 py-1 text-xs text-fuchsia-200 hover:bg-fuchsia-500/20 transition-colors">
+                    <Link href={`/create/analysis/${c.id}`} className="rounded-md bg-gradient-to-r from-fuchsia-500 to-pink-500 px-3 py-1 text-xs font-medium text-white shadow-sm shadow-pink-300/40 hover:from-fuchsia-600 hover:to-pink-600 transition-colors">
                       Analysis
                     </Link>
-                    <Link href={`/interview/${c.id}`} className="rounded-md border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-200 hover:bg-emerald-500/20 transition-colors inline-flex items-center gap-1">
+                    <Link href={`/interview/${c.id}`} className="rounded-md bg-gradient-to-r from-emerald-500 to-teal-500 px-3 py-1 text-xs font-medium text-white shadow-sm shadow-emerald-300/40 hover:from-emerald-600 hover:to-teal-600 transition-colors inline-flex items-center gap-1">
                       <CalendarDays className="h-3.5 w-3.5" />
                       Schedule
                     </Link>
                     <button
-                      className="rounded-md border border-slate-700 bg-slate-800 px-2 py-1 text-slate-200 hover:bg-slate-700 transition-colors"
+                      className="rounded-md border border-violet-200 bg-white/80 px-2 py-1 text-slate-700 hover:bg-violet-50 transition-colors"
                       onClick={() => alert(`Feedback sent to ${c.name}`)}
                       aria-label={`Send feedback to ${c.name}`}
                     >

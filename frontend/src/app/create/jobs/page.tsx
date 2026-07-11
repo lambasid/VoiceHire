@@ -108,32 +108,42 @@ export default function JobsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full text-slate-800 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-8">
-        <div className="rounded-2xl border border-slate-800/90 bg-slate-900/70 p-6 backdrop-blur-sm">
+        <div className="rounded-2xl border border-violet-200/60 bg-white/70 p-6 backdrop-blur-md shadow-sm shadow-violet-200/30">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">Job postings</h1>
-              <p className="mt-1 text-sm text-slate-400">Track open roles and review incoming candidates quickly.</p>
+              <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-violet-600 via-sky-500 to-rose-500 bg-clip-text text-transparent">Job postings</h1>
+              <p className="mt-1 text-sm text-slate-500">Track open roles and review incoming candidates quickly.</p>
             </div>
-          <Button>Create screen job</Button>
+          <Button className="bg-gradient-to-r from-violet-500 to-sky-500 text-white hover:from-violet-600 hover:to-sky-600 shadow-md shadow-violet-300/40">Create screen job</Button>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {jobs.map((job) => (
-            <Link href={`/create/jobs/${job.id}`} key={job.id}>
-              <div className="h-full rounded-xl border border-slate-800 bg-slate-900/80 p-5 text-slate-100 shadow-sm hover:-translate-y-0.5 hover:border-blue-500/50 hover:shadow-blue-900/20 hover:shadow-lg transition-all duration-200 cursor-pointer">
-                <div>
-                  <span className="inline-block rounded-full bg-blue-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-300 mb-3">
-                    {job.field}
-                  </span>
-                  <h2 className="text-xl font-semibold mb-2">{job.title}</h2>
-                  <p className="text-sm text-slate-400 line-clamp-3">{job.description}</p>
+          {jobs.map((job, i) => {
+            const accents = [
+              { chipBg: "bg-violet-100", chipText: "text-violet-700", ring: "hover:shadow-violet-300/40 hover:border-violet-300" },
+              { chipBg: "bg-sky-100", chipText: "text-sky-700", ring: "hover:shadow-sky-300/40 hover:border-sky-300" },
+              { chipBg: "bg-rose-100", chipText: "text-rose-700", ring: "hover:shadow-rose-300/40 hover:border-rose-300" },
+              { chipBg: "bg-emerald-100", chipText: "text-emerald-700", ring: "hover:shadow-emerald-300/40 hover:border-emerald-300" },
+              { chipBg: "bg-amber-100", chipText: "text-amber-700", ring: "hover:shadow-amber-300/40 hover:border-amber-300" },
+            ];
+            const a = accents[i % accents.length];
+            return (
+              <Link href={`/create/jobs/${job.id}`} key={job.id}>
+                <div className={`h-full rounded-xl border border-slate-200 bg-white/80 backdrop-blur-sm p-5 text-slate-800 shadow-sm hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 cursor-pointer ${a.ring}`}>
+                  <div>
+                    <span className={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide mb-3 ${a.chipBg} ${a.chipText}`}>
+                      {job.field}
+                    </span>
+                    <h2 className="text-xl font-semibold mb-2">{job.title}</h2>
+                    <p className="text-sm text-slate-500 line-clamp-3">{job.description}</p>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>

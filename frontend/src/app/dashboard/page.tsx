@@ -5,14 +5,13 @@ import React from "react";
 
 export default function Dashboard() {
   return (
-    <div className="flex h-screen min-h-screen bg-background text-foreground">
-
+    <div className="flex min-h-screen w-full text-slate-800">
       {/* Main Content */}
-      <div className="flex-1 p-6">
-        <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-        
+      <div className="flex-1 p-4 sm:p-6">
+        <h1 className="text-2xl font-bold mb-4 bg-gradient-to-r from-violet-600 via-sky-500 to-rose-500 bg-clip-text text-transparent">Dashboard</h1>
+
         {/* Top Section */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           <Card>
             <CardHeader>
               <CardTitle>Active Job Postings</CardTitle>
@@ -43,7 +42,7 @@ export default function Dashboard() {
         </div>
         
         {/* Charts Section */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <Card>
             <CardHeader>
               <CardTitle>Skills Distribution</CardTitle>

@@ -36,11 +36,11 @@ export default function FakeSpectrumVisualizer() {
     const cornerRadius = 3;
 
     const colors = [
-      'rgba(59, 130, 246, 0.7)', // blue-500
-      'rgba(37, 99, 235, 0.7)',  // blue-600
-      'rgba(29, 78, 216, 0.7)',  // blue-700
-      'rgba(30, 64, 175, 0.7)',  // blue-800
-      'rgba(17, 24, 39, 0.8)',   // gray-900 (darker)
+      'rgba(139, 92, 246, 0.55)',  // violet-500
+      'rgba(56, 189, 248, 0.55)',  // sky-400
+      'rgba(244, 114, 182, 0.55)', // pink-400
+      'rgba(52, 211, 153, 0.55)',  // emerald-400
+      'rgba(251, 191, 36, 0.55)',  // amber-400
     ];
 
     let spectrum = new Array(numBars).fill(0);
@@ -130,7 +130,7 @@ export default function FakeSpectrumVisualizer() {
   return (
     <canvas
       ref={canvasRef}
-      className="w-full h-full bg-gray-900"
+      className="w-full h-full bg-transparent"
     />
   );
 }

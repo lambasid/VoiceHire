@@ -107,10 +107,10 @@ export default function InterviewPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-white/80 backdrop-blur-sm">
         <div className="text-center">
           <div className="mx-auto h-16 w-16 animate-spin rounded-full border-2 border-b-2 border-indigo-500 border-t-transparent" />
-          <p className="mt-4 text-gray-600 dark:text-gray-400">
+          <p className="mt-4 text-gray-600 dark:text-slate-500">
             Analyzing candidate profile…
           </p>
         </div>
@@ -119,8 +119,8 @@ export default function InterviewPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8 dark:bg-gray-950">
-      <div className="mx-auto max-w-4xl rounded-lg bg-white p-6 shadow-md dark:border dark:border-gray-800 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 p-8 dark:bg-white/80 backdrop-blur-sm">
+      <div className="mx-auto max-w-4xl rounded-lg bg-white p-6 shadow-md dark:border dark:border-violet-200/60 dark:bg-white/80 backdrop-blur-sm">
         <h1 className="mb-2 text-2xl font-bold">AI interview analysis</h1>
         {usingMock && (
           <p className="mb-4 text-sm text-amber-600 dark:text-amber-500">
@@ -130,17 +130,17 @@ export default function InterviewPage() {
         )}
         {analysis && (
           <div className="space-y-4">
-            <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800/50">
+            <div className="rounded-lg bg-gray-50 p-4 dark:bg-white/70 backdrop-blur-sm/50">
               <h2 className="mb-2 font-semibold">Profile analysis</h2>
-              <p className="text-gray-700 dark:text-gray-300">
+              <p className="text-gray-700 dark:text-slate-700">
                 {analysis.profileAnalysis}
               </p>
             </div>
-            <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800/50">
+            <div className="rounded-lg bg-gray-50 p-4 dark:bg-white/70 backdrop-blur-sm/50">
               <h2 className="mb-2 font-semibold">Suggested questions</h2>
               <ul className="list-inside list-disc space-y-2">
                 {analysis.questions.map((q, i) => (
-                  <li key={i} className="text-gray-700 dark:text-gray-300">
+                  <li key={i} className="text-gray-700 dark:text-slate-700">
                     {q}
                   </li>
                 ))}

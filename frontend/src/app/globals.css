@@ -1,5 +1,20 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
+/* Colorful light theme — remap deep grays used across app to pastel colorful tones */
+@theme {
+  --color-gray-950: oklch(0.985 0.015 320);
+  --color-gray-900: oklch(0.985 0.02 300);
+  --color-gray-800: oklch(0.96 0.035 285);
+  --color-gray-700: oklch(0.9 0.05 265);
+  --color-gray-600: oklch(0.55 0.04 260);
+  --color-gray-500: oklch(0.5 0.04 260);
+  --color-gray-400: oklch(0.55 0.05 260);
+  --color-gray-300: oklch(0.82 0.04 265);
+  --color-gray-200: oklch(0.92 0.03 275);
+  --color-gray-100: oklch(0.97 0.02 290);
+  --color-gray-50:  oklch(0.99 0.015 300);
+}
 /* 
 ---break--- */
 @custom-variant dark (&:is(.dark *));
@@ -144,8 +159,80 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
+  html, body {
+    overflow-x: hidden;
+    color: oklch(0.22 0.05 265);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, oklch(0.94 0.09 300 / 0.55), transparent 60%),
+      radial-gradient(1000px 700px at 100% 10%, oklch(0.93 0.11 210 / 0.5), transparent 60%),
+      radial-gradient(900px 700px at 30% 110%, oklch(0.94 0.10 30 / 0.45), transparent 60%),
+      linear-gradient(180deg, oklch(0.99 0.01 300), oklch(0.98 0.02 240));
+    background-attachment: fixed;
   }
-  
+
+  /* Original dark theme restored under .dark scope */
+  .dark {
+    --color-gray-50:  oklch(0.985 0.002 247.839);
+    --color-gray-100: oklch(0.928 0.006 264.531);
+    --color-gray-200: oklch(0.85 0.02 260);
+    --color-gray-300: oklch(0.72 0.02 260);
+    --color-gray-400: oklch(0.62 0.02 260);
+    --color-gray-500: oklch(0.55 0.027 264.364);
+    --color-gray-600: oklch(0.44 0.03 260);
+    --color-gray-700: oklch(0.35 0.033 256);
+    --color-gray-800: oklch(0.27 0.033 256.848);
+    --color-gray-900: oklch(0.21 0.034 264.665);
+    --color-gray-950: oklch(0.13 0.028 261.692);
+  }
+  .dark, .dark body {
+    color: oklch(0.95 0.01 260);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, oklch(0.30 0.10 300 / 0.35), transparent 60%),
+      radial-gradient(1000px 700px at 100% 10%, oklch(0.26 0.10 240 / 0.35), transparent 60%),
+      radial-gradient(900px 700px at 30% 110%, oklch(0.28 0.09 350 / 0.30), transparent 60%),
+      linear-gradient(180deg, oklch(0.15 0.03 260), oklch(0.12 0.03 240));
+    background-attachment: fixed;
+  }
+}
+
+/* Dark-mode remap of hardcoded pastel utilities across pages */
+@layer utilities {
+  .dark .text-slate-800 { color: rgb(241 245 249); }
+  .dark .text-slate-700 { color: rgb(226 232 240); }
+  .dark .text-slate-600 { color: rgb(203 213 225); }
+  .dark .text-slate-500 { color: rgb(148 163 184); }
+  .dark .text-slate-400 { color: rgb(148 163 184); }
+
+  .dark .bg-white { background-color: rgba(30, 41, 59, 0.9); }
+  .dark .bg-white\/95 { background-color: rgba(30, 41, 59, 0.85); }
+  .dark .bg-white\/80 { background-color: rgba(30, 41, 59, 0.65); }
+  .dark .bg-white\/70 { background-color: rgba(30, 41, 59, 0.55); }
+  .dark .bg-white\/60 { background-color: rgba(30, 41, 59, 0.45); }
+  .dark .bg-white\/50 { background-color: rgba(30, 41, 59, 0.35); }
+  .dark .bg-violet-50\/60 { background-color: rgba(139, 92, 246, 0.15); }
+
+  .dark [class*="border-violet-200"] { border-color: rgba(139, 92, 246, 0.35); }
+  .dark [class*="border-violet-100"] { border-color: rgba(139, 92, 246, 0.25); }
+  .dark [class*="border-slate-200"] { border-color: rgba(51, 65, 85, 0.6); }
+
+  .dark .bg-violet-100 { background-color: rgba(139, 92, 246, 0.2); }
+  .dark .bg-sky-100 { background-color: rgba(56, 189, 248, 0.18); }
+  .dark .bg-rose-100 { background-color: rgba(244, 63, 94, 0.18); }
+  .dark .bg-emerald-100 { background-color: rgba(52, 211, 153, 0.18); }
+  .dark .bg-amber-100 { background-color: rgba(251, 191, 36, 0.18); }
+  .dark .bg-slate-100 { background-color: rgba(51, 65, 85, 0.5); color: rgb(226 232 240); }
+
+  .dark .text-violet-700 { color: rgb(196, 181, 253); }
+  .dark .text-sky-700 { color: rgb(125, 211, 252); }
+  .dark .text-sky-600 { color: rgb(125, 211, 252); }
+  .dark .text-rose-700 { color: rgb(253, 164, 175); }
+  .dark .text-emerald-700 { color: rgb(110, 231, 183); }
+  .dark .text-emerald-600 { color: rgb(110, 231, 183); }
+  .dark .text-amber-700 { color: rgb(253, 224, 71); }
+  .dark .text-amber-600 { color: rgb(253, 224, 71); }
+
+  /* Sidebar gradient */
+  .dark .from-violet-50 { --tw-gradient-from: rgba(30, 27, 75, 0.9) var(--tw-gradient-from-position); --tw-gradient-to: rgba(30, 27, 75, 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
+  .dark .via-white { --tw-gradient-to: rgba(15, 23, 42, 0) var(--tw-gradient-to-position); --tw-gradient-stops: var(--tw-gradient-from), rgba(15, 23, 42, 0.95) var(--tw-gradient-via-position), var(--tw-gradient-to); }
+  .dark .to-sky-50 { --tw-gradient-to: rgba(30, 58, 138, 0.9) var(--tw-gradient-to-position); }
 }

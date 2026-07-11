@@ -21,18 +21,18 @@ export default function SettingsPage() {
   });
 
   return (
-    <div className=" container flex-1 h-full w-full bg-gradient-to-b from-gray-900 to-gray-800 text-white">
-      <div className="max-w-4xl w-full mx-auto p-6 space-y-8">
+    <div className="container flex-1 h-full w-full overflow-y-auto text-slate-800">
+      <div className="max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-8">
         <h1 className="text-3xl font-bold">Settings</h1>
 
         {/* Account Settings */}
-        <div className="border border-gray-700 rounded-2xl shadow p-4 bg-gray-800">
+        <div className="border border-violet-200/60 rounded-2xl shadow shadow-violet-200/30 p-4 bg-white/80 backdrop-blur-sm">
           <h2 className="text-xl font-semibold mb-4">Account Settings</h2>
           <div className="space-y-2">
             <p><strong>Name:</strong> Jane Doe</p>
             <p><strong>Email:</strong> jane@company.com</p>
             <p><strong>Company:</strong> VoiceHire</p>
-            <button className="mt-2 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Change Password</button>
+            <button className="mt-2 px-4 py-2 rounded bg-gradient-to-r from-violet-500 to-sky-500 text-white hover:from-violet-600 hover:to-sky-600 shadow shadow-violet-300/30">Change Password</button>
           </div>
           <div className="mt-4">
             <h3 className="font-medium">Notification Preferences</h3>
@@ -42,7 +42,7 @@ export default function SettingsPage() {
                 <Switch
                   checked={enabled[type]}
                   onChange={(val) => setEnabled((prev) => ({ ...prev, [type]: val }))}
-                  className={`${enabled[type as keyof typeof enabled] ? 'bg-blue-600' : 'bg-gray-600'} relative inline-flex h-6 w-11 items-center rounded-full`}
+                  className={`${enabled[type as keyof typeof enabled] ? 'bg-blue-600' : 'bg-slate-300'} relative inline-flex h-6 w-11 items-center rounded-full`}
                 >
                   <span className="sr-only">Enable {type}</span>
                   <span
@@ -55,20 +55,20 @@ export default function SettingsPage() {
         </div>
 
         {/* AI Agent Configuration */}
-        <div className="border border-gray-700 rounded-2xl shadow p-4 bg-gray-800">
+        <div className="border border-violet-200/60 rounded-2xl shadow shadow-violet-200/30 p-4 bg-white/80 backdrop-blur-sm">
           <h2 className="text-xl font-semibold mb-4">AI Agent Configuration</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <select className="p-2 border border-gray-600 rounded bg-gray-700 text-white">
+            <select className="p-2 border border-violet-200 rounded bg-white text-slate-800">
               <option>Voice Sensitivity: Low</option>
               <option>Voice Sensitivity: Medium</option>
               <option>Voice Sensitivity: High</option>
             </select>
-            <select className="p-2 border border-gray-600 rounded bg-gray-700 text-white">
+            <select className="p-2 border border-violet-200 rounded bg-white text-slate-800">
               <option>Language: English</option>
               <option>Language: French</option>
               <option>Language: Spanish</option>
             </select>
-            <select className="p-2 border border-gray-600 rounded bg-gray-700 text-white">
+            <select className="p-2 border border-violet-200 rounded bg-white text-slate-800">
               <option>Response Tone: Friendly</option>
               <option>Response Tone: Professional</option>
               <option>Response Tone: Neutral</option>
@@ -77,10 +77,10 @@ export default function SettingsPage() {
         </div>
 
         {/* Scheduling Rules */}
-        <div className="border border-gray-700 rounded-2xl shadow p-4 bg-gray-800">
+        <div className="border border-violet-200/60 rounded-2xl shadow shadow-violet-200/30 p-4 bg-white/80 backdrop-blur-sm">
           <h2 className="text-xl font-semibold mb-4">Scheduling Rules</h2>
-          <input type="text" placeholder="Interview Time Slots (e.g. 10am-12pm)" className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white mb-2" />
-          <select className="p-2 border border-gray-600 rounded bg-gray-700 text-white w-full mb-2">
+          <input type="text" placeholder="Interview Time Slots (e.g. 10am-12pm)" className="w-full p-2 border border-violet-200 rounded bg-white text-slate-800 mb-2" />
+          <select className="p-2 border border-violet-200 rounded bg-white text-slate-800 w-full mb-2">
             <option>Buffer Time: 15 mins</option>
             <option>Buffer Time: 30 mins</option>
             <option>Buffer Time: 60 mins</option>
@@ -90,7 +90,7 @@ export default function SettingsPage() {
             <Switch
               checked={enabled.calendarSync}
               onChange={(val) => setEnabled({ ...enabled, calendarSync: val })}
-              className={`${enabled.calendarSync ? 'bg-blue-600' : 'bg-gray-600'} relative inline-flex h-6 w-11 items-center rounded-full`}
+              className={`${enabled.calendarSync ? 'bg-blue-600' : 'bg-slate-300'} relative inline-flex h-6 w-11 items-center rounded-full`}
             >
               <span className="sr-only">Enable calendar</span>
               <span
@@ -101,29 +101,29 @@ export default function SettingsPage() {
         </div>
 
         {/* ATS Integration */}
-        <div className="border border-gray-700 rounded-2xl shadow p-4 bg-gray-800">
+        <div className="border border-violet-200/60 rounded-2xl shadow shadow-violet-200/30 p-4 bg-white/80 backdrop-blur-sm">
           <h2 className="text-xl font-semibold mb-4">ATS Integration</h2>
-          <input type="text" placeholder="API Key or OAuth" className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white mb-2" />
-          <select className="p-2 border border-gray-600 rounded bg-gray-700 text-white w-full mb-2">
+          <input type="text" placeholder="API Key or OAuth" className="w-full p-2 border border-violet-200 rounded bg-white text-slate-800 mb-2" />
+          <select className="p-2 border border-violet-200 rounded bg-white text-slate-800 w-full mb-2">
             <option>Sync Frequency: Real-time</option>
             <option>Sync Frequency: Daily</option>
             <option>Sync Frequency: Weekly</option>
           </select>
-          <input type="text" placeholder="Filter Roles (e.g. Software Engineer)" className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" />
+          <input type="text" placeholder="Filter Roles (e.g. Software Engineer)" className="w-full p-2 border border-violet-200 rounded bg-white text-slate-800" />
         </div>
 
         {/* Automated Messaging */}
-        <div className="border border-gray-700 rounded-2xl shadow p-4 bg-gray-800">
+        <div className="border border-violet-200/60 rounded-2xl shadow shadow-violet-200/30 p-4 bg-white/80 backdrop-blur-sm">
           <h2 className="text-xl font-semibold mb-4">Automated Messaging</h2>
-          <textarea placeholder="Rejection Email Template" className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white mb-2" />
-          <textarea placeholder="Interview Invite Template" className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white mb-2" />
-          <input type="text" placeholder="Email Signature" className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white" />
+          <textarea placeholder="Rejection Email Template" className="w-full p-2 border border-violet-200 rounded bg-white text-slate-800 mb-2" />
+          <textarea placeholder="Interview Invite Template" className="w-full p-2 border border-violet-200 rounded bg-white text-slate-800 mb-2" />
+          <input type="text" placeholder="Email Signature" className="w-full p-2 border border-violet-200 rounded bg-white text-slate-800" />
         </div>
 
         {/* Privacy & Data Handling */}
-        <div className="border border-gray-700 rounded-2xl shadow p-4 bg-gray-800">
+        <div className="border border-violet-200/60 rounded-2xl shadow shadow-violet-200/30 p-4 bg-white/80 backdrop-blur-sm">
           <h2 className="text-xl font-semibold mb-4">Privacy & Data Handling</h2>
-          <select className="p-2 border border-gray-600 rounded bg-gray-700 text-white w-full mb-2">
+          <select className="p-2 border border-violet-200 rounded bg-white text-slate-800 w-full mb-2">
             <option>Data Retention: 30 Days</option>
             <option>Data Retention: 60 Days</option>
             <option>Data Retention: 90 Days</option>
@@ -133,7 +133,7 @@ export default function SettingsPage() {
             <Switch
               checked={enabled.anonymizeData}
               onChange={(val) => setEnabled({ ...enabled, anonymizeData: val })}
-              className={`${enabled.anonymizeData ? 'bg-blue-600' : 'bg-gray-600'} relative inline-flex h-6 w-11 items-center rounded-full`}
+              className={`${enabled.anonymizeData ? 'bg-blue-600' : 'bg-slate-300'} relative inline-flex h-6 w-11 items-center rounded-full`}
             >
               <span className="sr-only">Anonymize Data</span>
               <span
@@ -141,10 +141,10 @@ export default function SettingsPage() {
               />
             </Switch>
           </div>
-          <p className="text-sm text-gray-400 mt-2">We comply with GDPR to protect your candidate data.</p>
+          <p className="text-sm text-slate-500 mt-2">We comply with GDPR to protect your candidate data.</p>
         </div>
 
-        <button className="px-6 py-3 rounded bg-blue-600 text-white hover:bg-blue-700 shadow-lg">Save Changes</button>
+        <button className="px-6 py-3 rounded bg-gradient-to-r from-violet-500 to-sky-500 text-white hover:from-violet-600 hover:to-sky-600 shadow shadow-violet-300/30 shadow-lg">Save Changes</button>
       </div>
     </div>
   );

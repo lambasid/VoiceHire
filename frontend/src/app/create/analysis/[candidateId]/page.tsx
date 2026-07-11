@@ -61,8 +61,8 @@ export default function CandidateAnalysisReport() {
         {
           label: "Score (/5)",
           data: scores,
-          backgroundColor: "rgba(59, 130, 246, 0.6)",
-          borderColor: "rgba(59, 130, 246, 1)",
+          backgroundColor: "rgba(139, 92, 246, 0.5)",
+          borderColor: "rgba(139, 92, 246, 1)",
           borderWidth: 1,
         },
       ],
@@ -96,17 +96,17 @@ export default function CandidateAnalysisReport() {
         title: {
           display: true,
           text: "Candidate Evaluation Criteria",
-          color: "#ccc",
+          color: "#334155",
           font: { size: 16 },
         },
       },
       scales: {
-        x: { ticks: { color: "#aaa" } },
+        x: { ticks: { color: "#64748b" } },
         y: {
           beginAtZero: true,
           max: 5,
-          ticks: { stepSize: 1, color: "#aaa" },
-          grid: { color: "#333" },
+          ticks: { stepSize: 1, color: "#64748b" },
+          grid: { color: "#e2e8f0" },
         },
       },
     }),
@@ -119,20 +119,20 @@ export default function CandidateAnalysisReport() {
       plugins: {
         legend: {
           labels: {
-            color: "#ccc",
+            color: "#334155",
           },
         },
         title: {
           display: true,
           text: "Candidate Confidence Trend (Simulated)",
-          color: "#ccc",
+          color: "#334155",
           font: { size: 16 },
         },
       },
       scales: {
         x: {
-          ticks: { color: "#aaa" },
-          grid: { color: "#333" },
+          ticks: { color: "#64748b" },
+          grid: { color: "#e2e8f0" },
         },
         y: {
           beginAtZero: true,
@@ -146,45 +146,45 @@ export default function CandidateAnalysisReport() {
   );
 
   return (
-    <div className="max-w-4xl mx-auto p-8 text-gray-200 bg-gray-900 rounded-xl shadow-lg mt-10 border border-gray-700">
-      <h1 className="text-3xl font-bold mb-4 text-blue-400">AI Screening Report</h1>
-      <p className="text-sm text-gray-500 mb-6">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8 text-slate-800 bg-white/80 backdrop-blur-md rounded-xl shadow-lg shadow-violet-200/30 mt-4 sm:mt-10 border border-violet-200/60 overflow-x-hidden">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4 bg-gradient-to-r from-violet-600 via-sky-500 to-rose-500 bg-clip-text text-transparent">AI Screening Report</h1>
+      <p className="text-sm text-slate-500 mb-6">
         Candidate ID: {candidateId ?? "—"}
       </p>
 
       <section className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Candidate: {mockAnalysis.candidate_name}</h2>
-        <p className="text-gray-300">{mockAnalysis.candidate_summary}</p>
+        <h2 className="text-xl font-semibold mb-2 text-slate-800">Candidate: {mockAnalysis.candidate_name}</h2>
+        <p className="text-slate-600">{mockAnalysis.candidate_summary}</p>
       </section>
 
       <section className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-300 mb-4">Evaluation Chart</h3>
+        <h3 className="text-lg font-semibold text-violet-700 mb-4">Evaluation Chart</h3>
         <Bar data={chartData} options={chartOptions} />
       </section>
 
       <section className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-300 mb-4">Web Chart</h3>
+        <h3 className="text-lg font-semibold text-sky-700 mb-4">Web Chart</h3>
         <Line data={lineChartData} options={lineChartOptions} />
       </section>
 
       <section className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-300 mb-1">Strengths</h3>
-        <p className="text-green-400">{mockAnalysis.strengths}</p>
+        <h3 className="text-lg font-semibold text-emerald-700 mb-1">Strengths</h3>
+        <p className="text-emerald-600">{mockAnalysis.strengths}</p>
       </section>
 
       <section className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-300 mb-1">Weaknesses</h3>
-        <p className="text-yellow-400">{mockAnalysis.weaknesses}</p>
+        <h3 className="text-lg font-semibold text-amber-700 mb-1">Weaknesses</h3>
+        <p className="text-amber-600">{mockAnalysis.weaknesses}</p>
       </section>
 
       <section className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-300 mb-1">Sentiment & Confidence</h3>
-        <p className="text-gray-400">{mockAnalysis.sentiment_confidence_analysis}</p>
+        <h3 className="text-lg font-semibold text-slate-700 mb-1">Sentiment & Confidence</h3>
+        <p className="text-slate-600">{mockAnalysis.sentiment_confidence_analysis}</p>
       </section>
 
       <section>
-        <h3 className="text-lg font-semibold text-gray-300 mb-1">AI Recommendation</h3>
-        <p className="text-red-400">{mockAnalysis.ai_recommendation}</p>
+        <h3 className="text-lg font-semibold text-rose-700 mb-1">AI Recommendation</h3>
+        <p className="text-rose-600">{mockAnalysis.ai_recommendation}</p>
       </section>
     </div>
   );
